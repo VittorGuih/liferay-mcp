@@ -1,26 +1,26 @@
 {
-  "name": "@vittorguih/liferay-mcp-darwin-x64",
-  "version": "0.1.1",
-  "description": "macOS x64 native binary for liferay-mcp.",
-  "private": false,
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/VittorGuih/liferay-mcp.git"
-  },
-  "os": [
-    "darwin"
-  ],
-  "cpu": [
-    "x64"
-  ],
-  "bin": {
-    "liferay-mcp": "./bin/liferay-mcp"
-  },
-  "files": [
-    "bin",
-    "README.md"
-  ],
-  "engines": {
-    "node": ">=18"
-  }
+    "name":  "@vittorguih/liferay-mcp-darwin-x64",
+    "version":  "0.1.2",
+    "description":  "macOS x64 native binary for liferay-mcp.",
+    "private":  false,
+    "repository":  {
+                       "type":  "git",
+                       "url":  "git+https://github.com/VittorGuih/liferay-mcp.git"
+                   },
+    "os":  [
+               "darwin"
+           ],
+    "cpu":  [
+                "x64"
+            ],
+    "bin":  {
+                "liferay-mcp":  "./bin/liferay-mcp"
+            },
+    "files":  [
+                  "bin",
+                  "README.md"
+              ],
+    "engines":  {
+                    "node":  "\u003e=18"
+                }
 }
