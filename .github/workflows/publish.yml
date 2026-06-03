@@ -11,8 +11,8 @@ on:
       - "__manual_publish_registration_only__"
 
 permissions:
-  contents: write
   id-token: write
+  contents: read
 
 jobs:
   publish:
@@ -67,9 +67,6 @@ jobs:
           npm test
           npm pack --dry-run
       - name: Publish platform packages
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_OTP: ${{ secrets.NPM_OTP }}
         run: |
           publish_package() {
             local dir="$1"
@@ -81,34 +78,21 @@ jobs:
               echo "Skipping ${package_name}@${package_version}; already published."
               return
             fi
-            if [ -n "${NPM_OTP:-}" ]; then
-              npm publish "./$dir" --access public --provenance --otp "$NPM_OTP"
-            else
-              npm publish "./$dir" --access public --provenance
-            fi
+            npm publish "./$dir" --access public --provenance
           }
           for dir in packages/liferay-mcp-*; do
             publish_package "$dir"
           done
       - name: Publish wrapper
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_OTP: ${{ secrets.NPM_OTP }}
         run: |
           package_name="$(node -p "require('./package.json').name")"
           package_version="$(node -p "require('./package.json').version")"
           if npm view "${package_name}@${package_version}" version >/dev/null 2>&1; then
             echo "Skipping ${package_name}@${package_version}; already published."
-          elif [ -n "${NPM_OTP:-}" ]; then
-            npm publish --access public --provenance --otp "$NPM_OTP"
           else
             npm publish --access public --provenance
           fi
-      - name: Create public GitHub release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Public release note
         run: |
-          gh release create "v${{ inputs.version }}" \
-            --title "liferay-mcp v${{ inputs.version }}" \
-            artifacts/* \
-            --notes "Public npm wrapper release for liferay-mcp v${{ inputs.version }}."
+          echo "npm publish complete for v${{ inputs.version }}."
+          echo "Public GitHub release creation is intentionally omitted because this workflow uses contents: read for Trusted Publishing."
