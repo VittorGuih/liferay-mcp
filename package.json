@@ -1,6 +1,6 @@
 {
   "name": "liferay-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cross-platform npm wrapper for the native Liferay MCP server.",
   "type": "module",
   "private": false,
@@ -19,12 +19,12 @@
     "prepare-platform-packages": "node scripts/prepare-platform-packages.js"
   },
   "optionalDependencies": {
-    "liferay-mcp-win32-x64": "0.1.0",
-    "liferay-mcp-win32-arm64": "0.1.0",
-    "liferay-mcp-darwin-x64": "0.1.0",
-    "liferay-mcp-darwin-arm64": "0.1.0",
-    "liferay-mcp-linux-x64": "0.1.0",
-    "liferay-mcp-linux-arm64": "0.1.0"
+    "liferay-mcp-win32-x64": "0.1.1",
+    "liferay-mcp-win32-arm64": "0.1.1",
+    "liferay-mcp-darwin-x64": "0.1.1",
+    "liferay-mcp-darwin-arm64": "0.1.1",
+    "liferay-mcp-linux-x64": "0.1.1",
+    "liferay-mcp-linux-arm64": "0.1.1"
   },
   "devDependencies": {}
 }
