@@ -71,7 +71,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           for dir in packages/liferay-mcp-*; do
-            npm publish "$dir" --access public --provenance
+            npm publish "./$dir" --access public --provenance
           done
       - name: Publish wrapper
         env:
