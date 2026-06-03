@@ -4,6 +4,10 @@
   "description": "Cross-platform npm wrapper for the native Liferay MCP server.",
   "type": "module",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VittorGuih/liferay-mcp.git"
+  },
   "bin": {
     "liferay-mcp": "./bin/liferay-mcp.js"
   },
