@@ -1,0 +1,76 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish, without v prefix"
+        required: true
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+      - run: chmod +x bin/liferay-mcp.js
+      - name: Set package versions
+        run: |
+          npm version "${{ inputs.version }}" --no-git-tag-version
+          node scripts/prepare-platform-packages.js
+      - name: Download private Go release artifacts
+        env:
+          GH_TOKEN: ${{ secrets.PRIVATE_RELEASE_TOKEN }}
+        run: |
+          mkdir -p artifacts extracted binaries
+          gh release download "v${{ inputs.version }}" \
+            --repo VittorGuih/liferay-mcp-go \
+            --dir artifacts
+          for archive in artifacts/*.tar.gz; do
+            tar -xzf "$archive" -C extracted
+          done
+          for archive in artifacts/*.zip; do
+            unzip -q "$archive" -d extracted
+          done
+          find extracted -type f \( -name 'liferay-mcp' -o -name 'liferay-mcp.exe' \) | while read -r binary; do
+            dir="$(basename "$(dirname "$binary")")"
+            os="$(echo "$dir" | awk -F_ '{print $(NF-1)}')"
+            arch="$(echo "$dir" | awk -F_ '{print $NF}')"
+            ext=""
+            if [ "$os" = "windows" ]; then ext=".exe"; fi
+            cp "$binary" "binaries/liferay-mcp_${{ inputs.version }}_${os}_${arch}${ext}"
+          done
+      - name: Prepare platform packages
+        run: node scripts/prepare-platform-packages.js
+        env:
+          LIFERAY_MCP_BINARY_DIR: binaries
+      - name: Test wrapper
+        run: |
+          npm test
+          npm pack --dry-run
+      - name: Publish platform packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          for dir in packages/liferay-mcp-*; do
+            npm publish "$dir" --access public --provenance
+          done
+      - name: Publish wrapper
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public --provenance
+      - name: Create public GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "v${{ inputs.version }}" \
+            --title "liferay-mcp v${{ inputs.version }}" \
+            artifacts/* \
+            --notes "Public npm wrapper release for liferay-mcp v${{ inputs.version }}."

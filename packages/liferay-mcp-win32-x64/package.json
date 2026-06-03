@@ -1,0 +1,22 @@
+{
+  "name": "liferay-mcp-win32-x64",
+  "version": "0.1.0",
+  "description": "Windows x64 native binary for liferay-mcp.",
+  "private": false,
+  "os": [
+    "win32"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "bin": {
+    "liferay-mcp": "./bin/liferay-mcp.exe"
+  },
+  "files": [
+    "bin",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

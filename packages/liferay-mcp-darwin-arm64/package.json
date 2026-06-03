@@ -1,0 +1,22 @@
+{
+  "name": "liferay-mcp-darwin-arm64",
+  "version": "0.1.0",
+  "description": "macOS arm64 native binary for liferay-mcp.",
+  "private": false,
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "bin": {
+    "liferay-mcp": "./bin/liferay-mcp"
+  },
+  "files": [
+    "bin",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}
