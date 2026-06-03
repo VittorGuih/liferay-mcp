@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "@vittorguih/liferay-mcp-win32-x64",
   "version": "0.1.1",
   "description": "Windows x64 native binary for liferay-mcp.",
@@ -24,4 +24,3 @@
     "node": ">=18"
   }
 }
-

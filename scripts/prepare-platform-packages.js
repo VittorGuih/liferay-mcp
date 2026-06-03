@@ -3,7 +3,11 @@ import { chmod, cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { basename, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const rootPackage = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+function parseJson(raw) {
+  return JSON.parse(raw.replace(/^\uFEFF/, ""));
+}
+
+const rootPackage = parseJson(await readFile(new URL("../package.json", import.meta.url), "utf8"));
 const root = fileURLToPath(new URL("..", import.meta.url));
 
 const targets = [
@@ -19,7 +23,7 @@ const binaryDir = process.env.LIFERAY_MCP_BINARY_DIR;
 for (const [platform, arch, packageName, binaryName] of targets) {
   const packageDir = join(root, "packages", packageName);
   const packageJsonPath = join(packageDir, "package.json");
-  const packageJson = JSON.parse(await readFile(packageJsonPath, "utf8"));
+  const packageJson = parseJson(await readFile(packageJsonPath, "utf8"));
   packageJson.version = rootPackage.version;
   await writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2) + "\n");
 
