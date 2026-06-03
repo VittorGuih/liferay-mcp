@@ -36,18 +36,26 @@ jobs:
           gh release download "v${{ inputs.version }}" \
             --repo VittorGuih/liferay-mcp-go \
             --dir artifacts
-          for archive in artifacts/*.tar.gz; do
-            tar -xzf "$archive" -C extracted
-          done
-          for archive in artifacts/*.zip; do
-            unzip -q "$archive" -d extracted
-          done
-          find extracted -type f \( -name 'liferay-mcp' -o -name 'liferay-mcp.exe' \) | while read -r binary; do
-            dir="$(basename "$(dirname "$binary")")"
-            os="$(echo "$dir" | awk -F_ '{print $(NF-1)}')"
-            arch="$(echo "$dir" | awk -F_ '{print $NF}')"
+          for archive in artifacts/*.tar.gz artifacts/*.zip; do
+            [ -e "$archive" ] || continue
+            base="$(basename "$archive")"
+            base="${base%.tar.gz}"
+            base="${base%.zip}"
+            target="extracted/$base"
+            mkdir -p "$target"
+            case "$archive" in
+              *.tar.gz) tar -xzf "$archive" -C "$target" ;;
+              *.zip) unzip -oq "$archive" -d "$target" ;;
+            esac
+            os="$(echo "$base" | awk -F_ '{print $(NF-1)}')"
+            arch="$(echo "$base" | awk -F_ '{print $NF}')"
             ext=""
             if [ "$os" = "windows" ]; then ext=".exe"; fi
+            binary="$(find "$target" -type f -name "liferay-mcp${ext}" | head -1)"
+            if [ -z "$binary" ]; then
+              echo "Missing binary in $archive" >&2
+              exit 1
+            fi
             cp "$binary" "binaries/liferay-mcp_${{ inputs.version }}_${os}_${arch}${ext}"
           done
       - name: Prepare platform packages
