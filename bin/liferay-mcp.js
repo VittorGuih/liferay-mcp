@@ -7,12 +7,12 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 
 export const PLATFORM_PACKAGES = {
-  "win32-x64": "liferay-mcp-win32-x64",
-  "win32-arm64": "liferay-mcp-win32-arm64",
-  "darwin-x64": "liferay-mcp-darwin-x64",
-  "darwin-arm64": "liferay-mcp-darwin-arm64",
-  "linux-x64": "liferay-mcp-linux-x64",
-  "linux-arm64": "liferay-mcp-linux-arm64"
+  "win32-x64": "@vittorguih/liferay-mcp-win32-x64",
+  "win32-arm64": "@vittorguih/liferay-mcp-win32-arm64",
+  "darwin-x64": "@vittorguih/liferay-mcp-darwin-x64",
+  "darwin-arm64": "@vittorguih/liferay-mcp-darwin-arm64",
+  "linux-x64": "@vittorguih/liferay-mcp-linux-x64",
+  "linux-arm64": "@vittorguih/liferay-mcp-linux-arm64"
 };
 
 export function platformKey(platform = process.platform, arch = process.arch) {

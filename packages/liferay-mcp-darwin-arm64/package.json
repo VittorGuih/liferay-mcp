@@ -1,5 +1,5 @@
 {
-  "name": "liferay-mcp-darwin-arm64",
+  "name": "@vittorguih/liferay-mcp-darwin-arm64",
   "version": "0.1.1",
   "description": "macOS arm64 native binary for liferay-mcp.",
   "private": false,

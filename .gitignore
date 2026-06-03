@@ -1,5 +1,9 @@
 node_modules/
 dist/
 artifacts/
+extracted/
+binaries/
 *.tgz
 .env
+packages/*/bin/liferay-mcp
+packages/*/bin/liferay-mcp.exe

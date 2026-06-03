@@ -1,5 +1,5 @@
 {
-  "name": "liferay-mcp-linux-x64",
+  "name": "@vittorguih/liferay-mcp-linux-x64",
   "version": "0.1.1",
   "description": "Linux x64 native binary for liferay-mcp.",
   "private": false,
