@@ -1,6 +1,6 @@
 {
     "name":  "@vittorguih/liferay-mcp-darwin-x64",
-    "version":  "0.1.2",
+    "version":  "0.1.3",
     "description":  "macOS x64 native binary for liferay-mcp.",
     "private":  false,
     "repository":  {
@@ -13,9 +13,6 @@
     "cpu":  [
                 "x64"
             ],
-    "bin":  {
-                "liferay-mcp":  "./bin/liferay-mcp"
-            },
     "files":  [
                   "bin",
                   "README.md"
