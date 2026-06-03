@@ -23,6 +23,8 @@ jobs:
         with:
           node-version: "22"
       - run: chmod +x bin/liferay-mcp.js
+      - name: Use npm 11
+        run: npm install -g npm@11
       - name: Use npm trusted publishing auth
         run: |
           npm config delete //registry.npmjs.org/:_authToken || true
