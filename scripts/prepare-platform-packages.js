@@ -27,9 +27,10 @@ for (const [platform, arch, packageName, binaryName] of targets) {
     continue;
   }
   const goArch = arch === "x64" ? "amd64" : arch;
+  const goPlatform = platform === "win32" ? "windows" : platform;
   const sourceName = platform === "win32"
-    ? `liferay-mcp_${rootPackage.version}_${platform}_${goArch}.exe`
-    : `liferay-mcp_${rootPackage.version}_${platform}_${goArch}`;
+    ? `liferay-mcp_${rootPackage.version}_${goPlatform}_${goArch}.exe`
+    : `liferay-mcp_${rootPackage.version}_${goPlatform}_${goArch}`;
   const source = join(binaryDir, sourceName);
   const target = join(packageDir, "bin", binaryName);
   await mkdir(join(packageDir, "bin"), { recursive: true });
