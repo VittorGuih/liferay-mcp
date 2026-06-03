@@ -7,7 +7,8 @@ function parseJson(raw) {
   return JSON.parse(raw.replace(/^\uFEFF/, ""));
 }
 
-const rootPackage = parseJson(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+const rootPackagePath = new URL("../package.json", import.meta.url);
+const rootPackage = parseJson(await readFile(rootPackagePath, "utf8"));
 const root = fileURLToPath(new URL("..", import.meta.url));
 
 const targets = [
@@ -20,6 +21,12 @@ const targets = [
 ];
 
 const binaryDir = process.env.LIFERAY_MCP_BINARY_DIR;
+rootPackage.optionalDependencies ??= {};
+for (const [, , packageName] of targets) {
+  rootPackage.optionalDependencies[`@vittorguih/${packageName}`] = rootPackage.version;
+}
+await writeFile(rootPackagePath, JSON.stringify(rootPackage, null, 2) + "\n");
+
 for (const [platform, arch, packageName, binaryName] of targets) {
   const packageDir = join(root, "packages", packageName);
   const packageJsonPath = join(packageDir, "package.json");
