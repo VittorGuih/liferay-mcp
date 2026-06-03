@@ -6,6 +6,9 @@ on:
       version:
         description: "Version to publish, without v prefix"
         required: true
+  push:
+    tags:
+      - "__manual_publish_registration_only__"
 
 permissions:
   contents: write
