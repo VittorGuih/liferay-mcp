@@ -22,8 +22,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-          registry-url: "https://registry.npmjs.org"
       - run: chmod +x bin/liferay-mcp.js
+      - name: Use npm trusted publishing auth
+        run: |
+          npm config delete //registry.npmjs.org/:_authToken || true
+          unset NODE_AUTH_TOKEN
       - name: Set package versions
         run: |
           npm version "${{ inputs.version }}" --no-git-tag-version --allow-same-version
