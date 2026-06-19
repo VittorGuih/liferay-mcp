@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { spawnSync } from "node:child_process";
+import { realpathSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
@@ -64,8 +65,19 @@ export function run(argv = process.argv.slice(2), options = {}) {
   process.exit(result.status ?? 0);
 }
 
-const isEntrypoint = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
-if (isEntrypoint) {
+export function isEntrypoint(importMetaUrl = import.meta.url, argv1 = process.argv[1]) {
+  if (!argv1) {
+    return false;
+  }
+
+  try {
+    return realpathSync(fileURLToPath(importMetaUrl)) === realpathSync(argv1);
+  } catch {
+    return fileURLToPath(importMetaUrl) === argv1;
+  }
+}
+
+if (isEntrypoint()) {
   try {
     run();
   } catch (error) {
